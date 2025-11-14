@@ -34,7 +34,7 @@
         console.log(viewerWidth, viewerHeight)
 
         // Setting the dimensions and margins of the graph
-        var margin = {top: 50, right: 100, bottom: -100, left: 100},
+        var margin = {top: 50, right: 30, bottom: -100, left: 30},
             width = viewerWidth - margin.left - margin.right,
             height = viewerHeight - margin.top - margin.bottom;
 
@@ -57,7 +57,7 @@
                 "translate(" + margin.left + "," + margin.top + ")");
 
         // Defining file path
-        var plotting_data = "D3 Files/processed_data_v1.csv";
+        var plotting_data = "D3 Files/processed_data_v2.csv";
 
         //Read the data
         d3.csv(plotting_data).then(function (data) {
@@ -207,8 +207,8 @@
                 .data(widerData)
                 .enter()
                 .append("image")
-                .attr("href", d => "city-emblems/" + d.raster_name + ".png")
-                .attr("x", d => x(d.Census * -1) - (emblemDimensions.width / 2))
+                .attr("href", d => "state-emblems/" + d.raster_name + ".png")
+                .attr("x", d => x(d.x_place * -1) - (emblemDimensions.width / 2))
                 .attr("y", d => y(d.Rank * -1) - (emblemDimensions.height / 2))
                 .attr("width", emblemDimensions.width)
 
@@ -220,8 +220,8 @@
                 .append("image")
                 .attr("id", "emblemTooltips")
                 .attr("class", function (d) {return "mask " + d.raster_name})
-                .attr("href", d => "city-emblems/mask.png")
-                .attr("x", d => x(d.Census * -1) - (emblemDimensions.width / 2))
+                .attr("href", d => "state-emblems/mask.png")
+                .attr("x", d => x(d.x_place * -1) - (emblemDimensions.width / 2))
                 .attr("y", d => y(d.Rank * -1) - (emblemDimensions.height / 2))
                 .attr("width", emblemDimensions.width)
                 .attr("opacity", "0.5")
@@ -232,7 +232,7 @@
 
             // Creating dataframe specifying labels and coordinates
 
-            var uniqueXCoord = d3.sort(d3.union(data.map(d => +d.Census)));
+            var uniqueXCoord = d3.sort(d3.union(data.map(d => +d.x_place)));
 
             var uniqueXCoord2 = uniqueXCoord.push(...uniqueXCoord)
 
@@ -301,9 +301,9 @@
                 .enter()
                 .append("text")
                 .attr("class", "city right")
-                .attr("x", d => x((d.Census * -1) + 0.75))
+                .attr("x", d => x((d.x_place * -1) + 0.75))
                 .attr("y", d => y((d.Rank * -1) - 0.25))
-                .text(d => d.toolcity)
+                .text(d => d.toolState)
                 .on("mouseover", handleMouseOver)
                 .on("mouseout", handleMouseOut);
 
@@ -312,9 +312,9 @@
                 .enter()
                 .append("text")
                 .attr("class", "city left")
-                .attr("x", d => x((d.Census * -1) - 2))
+                .attr("x", d => x((d.x_place * -1) - 2))
                 .attr("y", d => y((d.Rank * -1) - 0.25))
-                .text(d => d.toolcity)
+                .text(d => d.toolState)
                 .on("mouseover", handleMouseOver)
                 .on("mouseout", handleMouseOut);
 
@@ -324,9 +324,9 @@
                 .append("text")
                 .attr("class", "city center")
                 .attr("text-anchor", "middle")
-                .attr("x", d => x((d.Census * -1)))
+                .attr("x", d => x((d.x_place * -1)))
                 .attr("y", d => y((d.Rank * -1) - 0.25))
-                .text(d => d.toolcity)
+                .text(d => d.toolState)
                 .on("mouseover", handleMouseOver)
                 .on("mouseout", handleMouseOut);
 

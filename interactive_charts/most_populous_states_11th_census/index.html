@@ -34,7 +34,7 @@
         console.log(viewerWidth, viewerHeight)
 
         // Setting the dimensions and margins of the graph
-        var margin = {top: 50, right: 100, bottom: -100, left: 100},
+        var margin = {top: 50, right: 30, bottom: -100, left: 30},
             width = viewerWidth - margin.left - margin.right,
             height = viewerHeight - margin.top - margin.bottom;
 
@@ -207,8 +207,8 @@
                 .data(widerData)
                 .enter()
                 .append("image")
-                .attr("href", d => "city-emblems/" + d.raster_name + ".png")
-                .attr("x", d => x(d.Census * -1) - (emblemDimensions.width / 2))
+                .attr("href", d => "state-emblems/" + d.raster_name + ".png")
+                .attr("x", d => x(d.x_place * -1) - (emblemDimensions.width / 2))
                 .attr("y", d => y(d.Rank * -1) - (emblemDimensions.height / 2))
                 .attr("width", emblemDimensions.width)
 
@@ -220,8 +220,8 @@
                 .append("image")
                 .attr("id", "emblemTooltips")
                 .attr("class", function (d) {return "mask " + d.raster_name})
-                .attr("href", d => "city-emblems/mask.png")
-                .attr("x", d => x(d.Census * -1) - (emblemDimensions.width / 2))
+                .attr("href", d => "state-emblems/mask.png")
+                .attr("x", d => x(d.x_place * -1) - (emblemDimensions.width / 2))
                 .attr("y", d => y(d.Rank * -1) - (emblemDimensions.height / 2))
                 .attr("width", emblemDimensions.width)
                 .attr("opacity", "0.5")
@@ -232,7 +232,7 @@
 
             // Creating dataframe specifying labels and coordinates
 
-            var uniqueXCoord = d3.sort(d3.union(data.map(d => +d.Census)));
+            var uniqueXCoord = d3.sort(d3.union(data.map(d => +d.x_place)));
 
             var uniqueXCoord2 = uniqueXCoord.push(...uniqueXCoord)
 
@@ -241,13 +241,13 @@
 
             var textLabels = {
                 "Label": [
-                    "1st Census", "2nd Census", "3rd Census", "4th Census", "5th Census", "6th Census", "7th Census", "8th Census", "9th Census", "10th Census", "11th Census", "12th Census", "1790", "1800", "1810", "1820", "1830", "1840", "1850", "1860", "1870", "1880", "1890", "1900"
+                    "1st Census", "2nd Census", "3rd Census", "4th Census", "5th Census", "6th Census", "7th Census", "8th Census", "9th Census", "10th Census", "11th Census", "1790", "1800", "1810", "1820", "1830", "1840", "1850", "1860", "1870", "1880", "1890"
                 ],
                 "x": [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 ],
                 "y": [
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 ]
             };
 
@@ -263,7 +263,7 @@
 
 
             svg.selectAll("text.label")
-                .data(textData.slice(0, 12))
+                .data(textData.slice(0, 11))
                 .enter()
                 .append("text")
                 .attr("class", "label")
@@ -273,7 +273,7 @@
                 .attr("fill", "black");
 
             svg.selectAll("text.year")
-                .data(textData.slice(-12))
+                .data(textData.slice(-11))
                 .enter()
                 .append("text")
                 .attr("class", "label")
@@ -282,7 +282,7 @@
                 .text(d => d.label)
                 .attr("fill", "black");
 
-            // Setting text for cities.
+            // Setting text for States.
 
             var rightText = widerData.filter(widerData =>
                 widerData.offset === "right"
@@ -296,37 +296,37 @@
                 widerData.label === "1"
             )
 
-            svg.selectAll("city.right")
+            svg.selectAll("State.right")
                 .data(rightText)
                 .enter()
                 .append("text")
-                .attr("class", "city right")
-                .attr("x", d => x((d.Census * -1) + 0.75))
+                .attr("class", "State right")
+                .attr("x", d => x((d.x_place * -1) + 0.6))
                 .attr("y", d => y((d.Rank * -1) - 0.25))
-                .text(d => d.toolcity)
+                .text(d => d.toolState)
                 .on("mouseover", handleMouseOver)
                 .on("mouseout", handleMouseOut);
 
-            svg.selectAll("city.left")
+            svg.selectAll("State.left")
                 .data(leftText)
                 .enter()
                 .append("text")
-                .attr("class", "city left")
-                .attr("x", d => x((d.Census * -1) - 2))
+                .attr("class", "State left")
+                .attr("x", d => x((d.x_place * -1) - 2.3))
                 .attr("y", d => y((d.Rank * -1) - 0.25))
-                .text(d => d.toolcity)
+                .text(d => d.toolState)
                 .on("mouseover", handleMouseOver)
                 .on("mouseout", handleMouseOut);
 
-            svg.selectAll("city.center")
+            svg.selectAll("State.center")
                 .data(centerText)
                 .enter()
                 .append("text")
-                .attr("class", "city center")
+                .attr("class", "State center")
                 .attr("text-anchor", "middle")
-                .attr("x", d => x((d.Census * -1)))
+                .attr("x", d => x((d.x_place * -1)))
                 .attr("y", d => y((d.Rank * -1) - 0.25))
-                .text(d => d.toolcity)
+                .text(d => d.toolState)
                 .on("mouseover", handleMouseOver)
                 .on("mouseout", handleMouseOut);
 
