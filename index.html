@@ -12,7 +12,7 @@
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.type = "text/css";
-    link.href = "D3 Files/stylesheet_v1.csv";
+    link.href = "D3 Files/stylesheet_v1.css";
     document.head.appendChild(link);
 </script>
 
@@ -57,7 +57,7 @@
                 "translate(" + margin.left + "," + margin.top + ")");
 
         // Defining file path
-        var plotting_data = "D3 Files/processed_data_v1.css" ;
+        var plotting_data = "D3 Files/processed_data_v1.csv" ;
 
         //Read the data
         d3.csv(plotting_data).then(function (data) {
